@@ -64,7 +64,6 @@ class UserResource extends Resource
 
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\Action::make('Verify')
                 ->icon('heroicon-m-check-badge')
                 ->action(function(user $user){
@@ -77,6 +76,8 @@ class UserResource extends Resource
                     $user->email_verified_at = null;
                     $user->save();
                 }),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 //Tables\Actions\BulkActionGroup::make([
