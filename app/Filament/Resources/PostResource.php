@@ -12,6 +12,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Forms\Set;
+use Illuminate\Support\Str;
 
 class PostResource extends Resource
 {
@@ -35,11 +37,15 @@ class PostResource extends Resource
                     ->preload(),
                 Forms\Components\TextInput::make('title')
                     ->required()
+                    ->live(onBlur: true)
+                    ->afterStateUpdated(fn(Set $set, ?string $state) => $set('slug', Str::slug($state)))
                     ->maxLength(255),
                 Forms\Components\TextInput::make('slug')
                     ->required()
+                    ->disabled()
+                    ->dehydrated()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('description')
+                Forms\Components\RichEditor::make('description')
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_path')
