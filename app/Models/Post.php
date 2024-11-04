@@ -4,11 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = ['emprendedor_id', 'categoria_id', 'title', 'slug', 'description', 'image_path'];
 
@@ -35,4 +36,10 @@ class Post extends Model
     {
         return $this->hasMany(Comentario::class);
     }
+    // En tu modelo Post.php
+    public function getImageUrlAttribute()
+    {
+        return $this->image_path ? asset('storage/' . $this->image_path) : null;
+    }
+
 }

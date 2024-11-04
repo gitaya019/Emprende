@@ -61,7 +61,7 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-
+                TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('Verify')
@@ -78,6 +78,8 @@ class UserResource extends Resource
                 }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                Tables\Actions\RestoreAction::make(),
+                Tables\Actions\ForceDeleteAction::make(),
             ])
             ->bulkActions([
                 //Tables\Actions\BulkActionGroup::make([
