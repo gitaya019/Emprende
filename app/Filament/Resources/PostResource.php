@@ -49,7 +49,9 @@ class PostResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\FileUpload::make('image_path')
-                    ->image(),
+                    ->image()
+                    ->imageEditor()
+                    ->require(),
             ]);
     }
 
