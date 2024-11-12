@@ -7,6 +7,7 @@ use App\Filament\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Forms\FormsComponent;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -32,11 +33,11 @@ class UserResource extends Resource
                     ->email()
                     ->required()
                     ->maxLength(255),
-                Forms\Components\DateTimePicker::make('email_verified_at'),
                 Forms\Components\TextInput::make('password')
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('roles')->multiple()->relationship('roles', 'name'),
             ]);
     }
 
@@ -59,23 +60,25 @@ class UserResource extends Resource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('roles.name'),
+
             ])
             ->filters([
                 TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('Verify')
-                ->icon('heroicon-m-check-badge')
-                ->action(function(user $user){
-                    $user->email_verified_at = Date ('Y-m-d H:i:s');
-                    $user->save();
-                }),
+                    ->icon('heroicon-m-check-badge')
+                    ->action(function (user $user) {
+                        $user->email_verified_at = Date('Y-m-d H:i:s');
+                        $user->save();
+                    }),
                 Tables\Actions\Action::make('Unverify')
-                ->icon('heroicon-m-x-circle')
-                ->action(function(user $user){
-                    $user->email_verified_at = null;
-                    $user->save();
-                }),
+                    ->icon('heroicon-m-x-circle')
+                    ->action(function (user $user) {
+                        $user->email_verified_at = null;
+                        $user->save();
+                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
@@ -83,8 +86,8 @@ class UserResource extends Resource
             ])
             ->bulkActions([
                 //Tables\Actions\BulkActionGroup::make([
-                 //   Tables\Actions\DeleteBulkAction::make(),
-               // ]),
+                //   Tables\Actions\DeleteBulkAction::make(),
+                // ]),
             ]);
     }
 
